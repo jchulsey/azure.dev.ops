@@ -2,12 +2,40 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+# resources: some scripts in another repo
 
 trigger:
-- main
+  branches:
+    include:
+    - main
+  tags:
+    include:
+      - "*"
 
-pool:
-  vmImage: ubuntu-latest
+# paths:
+#  include:
+#  - admin/*
+
+pr:
+ autoCancel: true
+ branches:
+   include:
+   - main
+
+stages:
+  - stage: Build
+  jobs:
+    - job: Build
+      pool: "name of pool"
+      workspace:
+        clean: all
+      steps:
+        - template: <path to template in repo>
+          parameters:
+            #projectDirectory: <where files will go>
+
+#pool:
+#  vmImage: ubuntu-latest
 
 steps:
 - script: echo Hello, world!
